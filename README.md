@@ -1,21 +1,48 @@
 # Clust
 
-**TODO: Add description**
+Global mnesia test cluster.
 
-## Installation
+# Start node
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `clust` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:clust, "~> 0.1.0"}
-  ]
-end
+```
+iex --name a@127.0.0.1 --cookie super-secret -S mix
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/clust>.
+Afterwards libcluster should take care of forming a cluster and mnesiac should
+form a mnesia cluster.
 
+# Commands to test mnesia
+
+## Information gathering
+
+```
+:mnesia.info
+```
+
+```
+Mnesiac.cluster_status
+```
+
+## Dirty Write
+
+```
+:mnesia.dirty_write({:example, 1, 1, 1})
+:mnesia.dirty_write({:example, 2, 2, 2})
+:mnesia.dirty_write({:example, 3, 4, 5})
+```
+
+## Write
+
+```
+:mnesia.write({:example, 1, 1, 1})
+:mnesia.write({:example, 2, 2, 2})
+:mnesia.write({:example, 3, 4, 5})
+```
+
+## Read
+
+```
+:mnesia.dirty_read({:example, 1})
+:mnesia.dirty_read({:example, 2})
+:mnesia.dirty_read({:example, 3})
+```
