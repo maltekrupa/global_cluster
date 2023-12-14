@@ -3,14 +3,14 @@ terraform {
     commands = get_terraform_commands_that_need_vars()
 
     optional_var_files = [
-      find_in_parent_folders("regional.tfvars"),
+      find_in_parent_folders("region.tfvars"),
     ]
 
   }
 }
 
 # Provider to use for all regions
-# Uses region from <region>/regional.tfvars file
+# Uses region from <region>/region.tfvars file
 generate "provider" {
   path = "provider.tf"
   if_exists = "overwrite_terragrunt"

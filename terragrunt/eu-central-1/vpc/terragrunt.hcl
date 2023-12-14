@@ -16,7 +16,7 @@ include "root" {
 }
 
 include "region" {
-  path   = find_in_parent_folders("region.hcl")
+  path   = find_in_parent_folders("regional.hcl")
   expose = true
 }
 
