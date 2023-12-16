@@ -3,7 +3,7 @@ terraform {
 }
 
 dependencies {
-  paths = ["../aws-data", "../aws-key-pair"]
+  paths = ["../aws-data"]
 }
 
 dependency "aws-data" {

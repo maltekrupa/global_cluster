@@ -1,3 +1,8 @@
+data "aws_key_pair" "login" {
+  key_name = "login"
+  include_public_key = true
+}
+
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow SSH inbound traffic"
@@ -33,7 +38,7 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_instance" "freebsd" {
   ami           = var.ami_id
   instance_type = var.instance_type
-  key_name      = aws_key_pair.login.key_name
+  key_name      = data.aws_key_pair.login.key_name
   subnet_id     = element(var.subnet_ids, 0)
 
   associate_public_ip_address = true
