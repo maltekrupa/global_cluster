@@ -12,7 +12,6 @@ source "amazon-ebs" "freebsd" {
   ami_regions = [
     "af-south-1",
     "ap-northeast-1",
-    "eu-central-1",
     "sa-east-1"
   ]
 
