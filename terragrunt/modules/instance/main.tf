@@ -1,8 +1,3 @@
-resource "aws_key_pair" "login" {
-  key_name   = "login"
-  public_key = var.key_pair
-}
-
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow SSH inbound traffic"
