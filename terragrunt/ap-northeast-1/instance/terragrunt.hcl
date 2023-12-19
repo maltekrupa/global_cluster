@@ -19,9 +19,6 @@ include {
 }
 
 inputs = {
-  key_pair      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO8/OFMet9Xbvx1fKbsoBTP5O9cWM+BGn93gqVGb+hCa maltekrupa"
-  ami_id        = dependency.aws-data.outputs.freebsd_14_arm_aws_ami_id
-  instance_type = "t4g.nano"
   subnet_ids    = dependency.vpc.outputs.public_subnets
   vpc_id        = dependency.vpc.outputs.vpc_id
 }

@@ -1,13 +1,10 @@
-terraform {
-  extra_arguments "regional_vars" {
-    commands = get_terraform_commands_that_need_vars()
+locals {
+  regional_vars = read_terragrunt_config(find_in_parent_folders("regional.hcl"))
 
-    optional_var_files = [
-      find_in_parent_folders("region.tfvars"),
-    ]
-
-  }
+  aws_region = local.regional_vars.locals.aws_region
 }
+
+inputs = merge(local.regional_vars.locals)
 
 # Provider to use for all regions
 # Uses region from <region>/region.tfvars file
@@ -16,17 +13,11 @@ generate "provider" {
   if_exists = "overwrite_terragrunt"
   contents = <<EOF
 provider "aws" {
-  region = var.aws_region
+  region = "${local.aws_region}"
 
   assume_role {
     role_arn = "arn:aws:iam::220385822420:role/OrganizationAccountAccessRole"
   }
-
-}
-
-variable "aws_region" {
-  description = "AWS region to create infrastructure in"
-  type        = string
 }
 EOF
 }
@@ -41,7 +32,7 @@ remote_state {
   config = {
     bucket = "mnesia-test"
 
-    key = "${path_relative_to_include()}/terraform.tfstate"
+    key            = "${path_relative_to_include()}/terraform.tfstate"
     region         = "eu-central-1"
     encrypt        = true
     dynamodb_table = "mnesia-test-lock-table"
