@@ -38,10 +38,7 @@ build {
 
   provisioner "shell" {
     inline = [
-      "echo done"
-#      "su -",
-#      "pkg install -y wireguard elixir-devel erlang-runtime26",
-#      "echo export PATH=/usr/local/lib/erlang26/bin:$PATH >> /home/ec2-user/.shrc"
+      "echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO8/OFMet9Xbvx1fKbsoBTP5O9cWM+BGn93gqVGb+hCa > .ssh/authorized_keys"
     ]
   }
 }

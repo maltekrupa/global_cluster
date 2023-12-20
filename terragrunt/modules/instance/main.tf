@@ -18,6 +18,15 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   ingress {
+    description      = "Wireguard"
+    from_port        = 51820
+    to_port          = 51820
+    protocol         = "udp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
     description      = "ICMP"
     from_port        = -1
     to_port          = -1
