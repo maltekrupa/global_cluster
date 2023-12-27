@@ -1,0 +1,45 @@
+---
+
+name: Test and check format
+on:
+  workflow_call:
+  pull_request:
+    branches:
+      - main
+
+env:
+  OTP_VERSION: 26.2.1
+  ELIXIR_VERSION: 1.16.0
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: "test"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install erlang/elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+          version-type: 'strict'
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-deps-${{ hashFiles('mix.lock') }}
+      - name: Download dependencies
+        run: mix deps.get
+      - name: Compile dependencies
+        # if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: mix compile --warnings-as-errors
+      - name: Check format (lint)
+        run: mix format --check-formatted
+      - name: Static analysis
+        run: mix credo
+      - name: Run tests
+        run: mix test
