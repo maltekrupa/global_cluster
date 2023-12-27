@@ -1,0 +1,14 @@
+# wireguard
+
+ec2-user@freebsd:~ $ su -
+root@freebsd:~ # pkg install -y wireguard-tools vim curl
+root@freebsd:~ # vi /usr/local/etc/wireguard/wg0.conf
+root@freebsd:~ # service wireguard enable
+root@freebsd:~ # sysrc wireguard_interfaces="wg0"
+root@freebsd:~ # service wireguard start
+
+# elixir
+ec2-user@freebsd:~ $ su -
+root@freebsd:~ # pkg install -y elixir-devel erlang-runtime26 tcpdump rsync htop
+root@freebsd:~ # exit
+ec2-user@freebsd:~ $ echo "export PATH=/usr/local/lib/erlang26/bin:$PATH" >> .shrc
