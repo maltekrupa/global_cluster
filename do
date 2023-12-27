@@ -57,7 +57,6 @@ function do_deploy {
     exit 1
   fi
 
-  ls -la _build/prod/${RELEASE_NAME}*tar.gz
   local timestamp
   timestamp="$(date -Iseconds)"
   local version
@@ -65,7 +64,6 @@ function do_deploy {
   local filename
   filename="${RELEASE_NAME}-${version}-${timestamp}"
 
-  ls -la _build/prod/${RELEASE_NAME}*tar.gz
   _scp _build/prod/${RELEASE_NAME}*tar.gz "${DEPLOY_TARGET_SCP}:/tmp/${filename}.tar.gz"
   _ssh "mkdir -p /usr/local/${RELEASE_NAME}/$filename"
   _ssh "tar xzf /tmp/${filename}.tar.gz -C /usr/local/${RELEASE_NAME}/$filename"
