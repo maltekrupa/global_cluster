@@ -15,8 +15,7 @@ config :global_cluster, GlobalClusterWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "5tGSQJLCB/s5l2W8d4lcOF+48OnLiNMp3gFaPkYxpXW5sJX2EewNc0wFLZqmgxoc",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support
