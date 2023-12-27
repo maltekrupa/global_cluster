@@ -23,9 +23,11 @@ config :global_cluster, GlobalClusterWeb.Endpoint,
 
 config :mnesiac,
   stores: [GlobalCluster.ExampleStore],
-  dir: '.mnesia/#{node()}',
-  schema_type: :disc_copies, # or :disc_copies
-  table_load_timeout: 600_000 # milliseconds, default is 600_000
+  dir: ~c".mnesia/#{node()}",
+  # or :disc_copies
+  schema_type: :disc_copies,
+  # milliseconds, default is 600_000
+  table_load_timeout: 600_000
 
 config :libcluster,
   topologies: [
