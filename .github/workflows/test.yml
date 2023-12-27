@@ -3,9 +3,8 @@
 name: Test and check format
 on:
   workflow_call:
-  pull_request:
-    branches:
-      - main
+  push:
+    branches: '**'
 
 env:
   OTP_VERSION: 26.2.1
