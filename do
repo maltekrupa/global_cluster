@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+set -x
+
 readonly RELEASE_NAME="globalcluster"
 
 readonly MIX_ENV="${MIX_ENV:-test}"
