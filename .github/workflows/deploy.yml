@@ -1,0 +1,47 @@
+---
+
+name: Deploy to hetzner
+on:
+  push:
+    branches:
+      - main
+
+env:
+  # Erlang and elixir are managed on the cicd host.
+  # The version installed is the version that is packaged into a release.
+  #
+  # To change it, update the packages on cicd.w0.m.nafn.de
+  MIX_ENV: prod
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+  deploy:
+    name: Deploy to hetzner
+    needs: test
+    runs-on: [freebsd, self-hosted, amd64]
+    strategy:
+      matrix:
+        target:
+          - 18.193.103.112  # eu-central-1
+          - 13.245.117.66   # af-south-1
+          - 15.228.204.116  # sa-east-1
+          - 13.114.255.160  # ap-northeast-1
+    steps:
+      - uses: actions/checkout@v2
+      - name: Add erlang to PATH
+        run: echo "/usr/local/lib/erlang26/bin" >> $GITHUB_PATH
+      - name: Download hex
+        run: mix local.hex --if-missing --force
+      - name: Download rebar3
+        run: mix local.rebar --if-missing --force
+      - name: Download dependencies
+        run: mix deps.get
+      - name: Compile assets
+        run: mix assets.deploy
+      - name: Digest and compress static files
+        run: mix phx.digest
+      - name: Build release
+        run: mix release webtools
+      - name: Deploy
+        run: ./do deploy ${{ matrix.target }}
