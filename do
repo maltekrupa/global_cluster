@@ -4,14 +4,14 @@ set -euo pipefail
 
 set -x
 
-readonly RELEASE_NAME="globalcluster"
-
-readonly MIX_ENV="${MIX_ENV:-test}"
-readonly DEPLOY_TARGET_HOST="$1"
+readonly DEPLOY_TARGET_HOST="$2"
 readonly DEPLOY_TARGET_USER="globalcluster"
 readonly DEPLOY_TARGET_SSH_CONFIG="/usr/local/github-runner/.ssh/config"
 readonly DEPLOY_TARGET_SSH="${DEPLOY_TARGET_USER}@$DEPLOY_TARGET_HOST"
 readonly DEPLOY_TARGET_SCP="${DEPLOY_TARGET_USER}@[$DEPLOY_TARGET_HOST]"
+
+readonly MIX_ENV="${MIX_ENV:-test}"
+readonly RELEASE_NAME="globalcluster"
 
 function do_help {
   echo "Usage: ./do <thing>"
