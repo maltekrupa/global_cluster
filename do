@@ -44,10 +44,10 @@ function do_build {
 function do_deploy {
   # Remote
   local r
-  r="$(_ssh uname -mo)"
+  r="$(_ssh uname -o)"
   # Local
   local l
-  l="$(uname -mo)"
+  l="$(uname -o)"
 
   if [[ "$r" != "$l" ]]
   then
