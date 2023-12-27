@@ -57,6 +57,7 @@ function do_deploy {
     exit 1
   fi
 
+  ls -la _build/prod/${RELEASE_NAME}*tar.gz
   local timestamp
   timestamp="$(date -Iseconds)"
   local version
