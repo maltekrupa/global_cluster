@@ -47,7 +47,8 @@ defmodule GlobalCluster.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
       {:libcluster, "~> 3.3"},
-      {:mnesiac, "~> 0.3"}
+      {:mnesiac, "~> 0.3"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 
