@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+readonly RELEASE_NAME="globalcluster"
+
 readonly MIX_ENV="${MIX_ENV:-test}"
 readonly DEPLOY_TARGET_HOST="$1"
 readonly DEPLOY_TARGET_USER="globalcluster"
@@ -34,7 +36,7 @@ function do_static {
 }
 
 function do_build {
-  mix release webtools
+  mix release ${RELEASE_NAME}
 }
 
 function do_deploy {
@@ -58,14 +60,14 @@ function do_deploy {
   local version
   version="${GITHUB_SHA::7}"
   local filename
-  filename="webtools-${version}-${timestamp}"
+  filename="${RELEASE_NAME}-${version}-${timestamp}"
 
-  _scp _build/prod/webtools*tar.gz "${DEPLOY_TARGET_SCP}:/tmp/${filename}.tar.gz"
-  _ssh "mkdir -p /usr/local/webtools/$filename"
-  _ssh "tar xzf /tmp/${filename}.tar.gz -C /usr/local/webtools/$filename"
-  _ssh sudo service webtools stop || true
-  _ssh "ln -sFf /usr/local/webtools/${filename} /usr/local/webtools/active"
-  _ssh "sudo service webtools start > /dev/null 2>&1"
+  _scp _build/prod/${RELEASE_NAME}*tar.gz "${DEPLOY_TARGET_SCP}:/tmp/${filename}.tar.gz"
+  _ssh "mkdir -p /usr/local/${RELEASE_NAME}/$filename"
+  _ssh "tar xzf /tmp/${filename}.tar.gz -C /usr/local/${RELEASE_NAME}/$filename"
+  _ssh sudo service ${RELEASE_NAME} stop || true
+  _ssh "ln -sFf /usr/local/${RELEASE_NAME}/${filename} /usr/local/${RELEASE_NAME}/active"
+  _ssh "sudo service ${RELEASE_NAME} start > /dev/null 2>&1"
 }
 
 function _ssh {
