@@ -9,7 +9,13 @@ defmodule GlobalCluster.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: [
+        with_tar: [
+          steps: [:assemble, :tar]
+        ]
+      ],
+      default_release: :with_tar
     ]
   end
 
