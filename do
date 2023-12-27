@@ -84,9 +84,9 @@ function _ssh {
 
 function _scp {
   if [[ -f "$DEPLOY_TARGET_SSH_CONFIG" ]]; then
-    scp -6 -F /usr/local/github-runner/.ssh/config "$@"
+    scp -F /usr/local/github-runner/.ssh/config "$@"
   else
-    scp -6 "$@"
+    scp "$@"
   fi
 }
 
