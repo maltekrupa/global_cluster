@@ -1,3 +1,14 @@
+# on firstboot
+su -
+mkdir .ssh
+chmod 0700 .ssh
+echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO8/OFMet9Xbvx1fKbsoBTP5O9cWM+BGn93gqVGb+hCa mkrupa@noname > .ssh/authorized_keys
+chmod 0600 .ssh/authorized_keys
+sed -i '' 's/#PermitRootLogin no/PermitRootLogin without-password/g' /etc/ssh/sshd_config
+service sshd restart
+exit
+exit
+
 # wireguard
 
 ec2-user@freebsd:~ $ su -
@@ -12,3 +23,4 @@ ec2-user@freebsd:~ $ su -
 root@freebsd:~ # pkg install -y elixir-devel erlang-runtime26 tcpdump rsync htop
 root@freebsd:~ # exit
 ec2-user@freebsd:~ $ echo "export PATH=/usr/local/lib/erlang26/bin:$PATH" >> .shrc
+
