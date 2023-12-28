@@ -11,11 +11,11 @@ defmodule GlobalCluster.MixProject do
       aliases: aliases(),
       deps: deps(),
       releases: [
-        globalcluster: [
+        global_cluster: [
           steps: [:assemble, :tar]
         ]
       ],
-      default_release: :globalcluster
+      default_release: :global_cluster
     ]
   end
 
