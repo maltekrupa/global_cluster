@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-set -x
-
 readonly DEPLOY_TARGET_HOST="$2"
 readonly DEPLOY_TARGET_USER="globalcluster"
 readonly DEPLOY_TARGET_SSH_CONFIG="/usr/local/github-runner/.ssh/config"
