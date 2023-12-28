@@ -15,7 +15,7 @@ source "amazon-ebs" "freebsd" {
     "sa-east-1"
   ]
 
-  instance_type               = "t4g.large"
+  instance_type               = "t3.large"
   profile                     = "test"
   region                      = "eu-central-1"
 
@@ -24,7 +24,7 @@ source "amazon-ebs" "freebsd" {
 
   source_ami_filter {
     filters = {
-      name                = "FreeBSD 14.0-RELEASE-arm64 UEFI-PREFERRED base ZFS*"
+      name                = "FreeBSD 14.0-RELEASE-amd64 UEFI-PREFERRED base ZFS*"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
