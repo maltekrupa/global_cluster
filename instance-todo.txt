@@ -13,7 +13,9 @@ exit
 
 ec2-user@freebsd:~ $ su -
 root@freebsd:~ # pkg install -y wireguard-tools vim curl
-root@freebsd:~ # vi /usr/local/etc/wireguard/wg0.conf
+root@freebsd:~ # cp /home/maltekrupa/wg0.conf /usr/local/etc/wireguard/wg0.conf
+root@freebsd:~ # chown root:wheel /usr/local/etc/wireguard/wg0.conf
+root@freebsd:~ # chmod 0600 /usr/local/etc/wireguard/wg0.conf
 root@freebsd:~ # service wireguard enable
 root@freebsd:~ # sysrc wireguard_interfaces="wg0"
 root@freebsd:~ # service wireguard start
