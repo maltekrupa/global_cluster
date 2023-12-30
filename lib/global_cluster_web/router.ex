@@ -16,6 +16,8 @@ defmodule GlobalClusterWeb.Router do
 
   scope "/", GlobalClusterWeb do
     pipe_through(:browser)
+
+    live("/", PageLive)
   end
 
   # Other scopes may use custom stacks.
