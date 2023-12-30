@@ -16,8 +16,6 @@ defmodule GlobalClusterWeb.Router do
 
   scope "/", GlobalClusterWeb do
     pipe_through(:browser)
-
-    get("/", PageController, :home)
   end
 
   # Other scopes may use custom stacks.
