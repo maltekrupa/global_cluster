@@ -35,7 +35,14 @@ config :libcluster,
       # The selected clustering strategy. Required.
       strategy: Cluster.Strategy.Epmd,
       # Configuration for the provided strategy. Optional.
-      config: [hosts: [:"a@127.0.0.1", :"b@127.0.0.1"]]
+      config: [
+        hosts: [
+          :"global_cluster@eu-central-1",
+          :"global_cluster@af-south-1",
+          :"global_cluster@ap-northeast-1",
+          :"global_cluster@sa-east-1"
+        ]
+      ]
     ]
   ]
 
