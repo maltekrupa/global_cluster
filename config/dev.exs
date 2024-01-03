@@ -51,6 +51,21 @@ config :global_cluster, GlobalClusterWeb.Endpoint,
     ]
   ]
 
+config :libcluster,
+  topologies: [
+    epmd_example: [
+      # The selected clustering strategy. Required.
+      strategy: Cluster.Strategy.Epmd,
+      # Configuration for the provided strategy. Optional.
+      config: [
+        hosts: [
+          :"a@127.0.0.1",
+          :"b@127.0.0.1"
+        ]
+      ]
+    ]
+  ]
+
 # Enable dev routes for dashboard and mailbox
 config :global_cluster, dev_routes: true
 
