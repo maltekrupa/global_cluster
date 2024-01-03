@@ -32,6 +32,7 @@ defmodule GlobalClusterWeb.PageLive do
 
   defp put_mnesia_nodes(socket) do
     topology = Application.get_env(:libcluster, :topologies)
+
     all_nodes =
       topology[:epmd_example][:config][:hosts]
       |> Enum.map(&Atom.to_string/1)
