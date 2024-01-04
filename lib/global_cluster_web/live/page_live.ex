@@ -58,6 +58,11 @@ defmodule GlobalClusterWeb.PageLive do
   def table_rows(assigns) do
     ~H"""
     <h3>Mnesia table content</h3>
+    <div>
+      <.button phx-click="add">Add entry</.button>
+      <.button phx-click="clear">Clear table</.button>
+    </div>
+    <br />
     <.table id="rows" rows={@rows}>
       <:col :let={row} label="ID"><%= elem(row, 1) %></:col>
       <:col :let={row} label="Topic"><%= elem(row, 2) %></:col>
@@ -100,7 +105,9 @@ defmodule GlobalClusterWeb.PageLive do
   end
 
   defp put_table_rows(socket) do
-    rows = :ets.tab2list(:example)
+    rows =
+      :ets.tab2list(:example)
+      |> Enum.sort(:desc)
 
     socket
     |> assign(table_rows: rows)
@@ -123,5 +130,23 @@ defmodule GlobalClusterWeb.PageLive do
      |> put_libcluster_nodes()
      |> put_all_nodes()
      |> put_table_rows()}
+  end
+
+  @impl true
+  def handle_event("add", _, socket) do
+    :mnesia.dirty_write({
+      :example,
+      DateTime.utc_now() |> DateTime.to_iso8601(),
+      :rand.uniform(1024),
+      :rand.uniform(1024)
+    })
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("clear", _, socket) do
+    :mnesia.clear_table(:example)
+    {:noreply, socket}
   end
 end
