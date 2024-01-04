@@ -88,14 +88,14 @@ defmodule GlobalClusterWeb.PageLive do
     |> assign(table_rows: rows)
   end
 
-  defp put_os_version(socket) do
-    {os, 0} = System.cmd("uname", ["-o"])
-    {os_version, 0} = System.cmd("uname", ["-r"])
+  # defp put_os_version(socket) do
+  #   {os, 0} = System.cmd("uname", ["-o"])
+  #   {os_version, 0} = System.cmd("uname", ["-r"])
 
-    socket
-    |> assign(os: os)
-    |> assign(os_version: os_version)
-  end
+  #   socket
+  #   |> assign(os: os)
+  #   |> assign(os_version: os_version)
+  # end
 
   @impl true
   def handle_info(:tick, socket) do
