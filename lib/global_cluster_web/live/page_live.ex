@@ -10,6 +10,8 @@ defmodule GlobalClusterWeb.PageLive do
      socket
      |> assign(:page_title, "Global Cluster")
      |> put_mnesia_nodes()
+     |> put_libcluster_nodes()
+     |> put_all_nodes()
      |> put_table_rows()}
   end
 
@@ -17,7 +19,7 @@ defmodule GlobalClusterWeb.PageLive do
   def render(assigns) do
     ~H"""
     <.intro />
-    <.mnesia_cluster mnesia_nodes={@mnesia_nodes} all_nodes={@all_nodes} />
+    <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} />
     <.table_rows rows={@table_rows} />
     """
   end
@@ -25,7 +27,7 @@ defmodule GlobalClusterWeb.PageLive do
   def intro(assigns) do
     ~H"""
     <div>
-      This is an example application running on four t3.nano instances. Each instance is running on a different continent.
+      This is tech demo running on four t3.nano instances. Each instance is running on a different continent.
     </div>
     <div>
       All VMs are using FreeBSD and are connected to each other using a wireguard mesh.
@@ -37,6 +39,7 @@ defmodule GlobalClusterWeb.PageLive do
   end
 
   attr(:mnesia_nodes, :list, required: true)
+  attr(:libcluster_nodes, :list, required: true)
   attr(:all_nodes, :list, required: true)
 
   def mnesia_cluster(assigns) do
@@ -44,7 +47,8 @@ defmodule GlobalClusterWeb.PageLive do
     <h3>Nodes</h3>
     <.table id="nodes" rows={@all_nodes}>
       <:col :let={node} label="Node"><%= node |> String.split("@") |> List.last %></:col>
-      <:col :let={node} label="Part of mnesia"><%= node in @mnesia_nodes %></:col>
+      <:col :let={node} label="libcluster"><%= if node in @libcluster_nodes, do: "connected", else: "disconnected" %></:col>
+      <:col :let={node} label="mnesia"><%= if node in @mnesia_nodes, do: "connected", else: "disconnected" %></:col>
     </.table>
     """
   end
@@ -62,13 +66,28 @@ defmodule GlobalClusterWeb.PageLive do
     """
   end
 
-  defp put_mnesia_nodes(socket) do
+  defp put_libcluster_nodes(socket) do
+    libcluster_nodes =
+      [Node.self() | Node.list()]
+      |> Enum.map(&Atom.to_string/1)
+      |> Enum.sort()
+
+    socket
+    |> assign(libcluster_nodes: libcluster_nodes)
+  end
+
+  defp put_all_nodes(socket) do
     topology = Application.get_env(:libcluster, :topologies)
 
     all_nodes =
       topology[:epmd_example][:config][:hosts]
       |> Enum.map(&Atom.to_string/1)
 
+    socket
+    |> assign(all_nodes: all_nodes)
+  end
+
+  defp put_mnesia_nodes(socket) do
     mnesia_nodes =
       Mnesiac.cluster_status()
       |> List.keyfind(:running_nodes, 0)
@@ -78,7 +97,6 @@ defmodule GlobalClusterWeb.PageLive do
 
     socket
     |> assign(mnesia_nodes: mnesia_nodes)
-    |> assign(all_nodes: all_nodes)
   end
 
   defp put_table_rows(socket) do
@@ -102,6 +120,8 @@ defmodule GlobalClusterWeb.PageLive do
     {:noreply,
      socket
      |> put_mnesia_nodes()
+     |> put_libcluster_nodes()
+     |> put_all_nodes()
      |> put_table_rows()}
   end
 end
