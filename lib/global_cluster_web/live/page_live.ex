@@ -8,7 +8,7 @@ defmodule GlobalClusterWeb.PageLive do
 
     {:ok,
      socket
-     |> assign(:page_title, "Global Cluster")
+     |> assign(:page_title, "Global Cluster - Tech Demo")
      |> put_mnesia_nodes()
      |> put_libcluster_nodes()
      |> put_all_nodes()
@@ -64,9 +64,9 @@ defmodule GlobalClusterWeb.PageLive do
     </div>
     <br />
     <.table id="rows" rows={@rows}>
-      <:col :let={row} label="ID"><%= elem(row, 1) %></:col>
-      <:col :let={row} label="Topic"><%= elem(row, 2) %></:col>
-      <:col :let={row} label="Event"><%= elem(row, 3) %></:col>
+      <:col :let={row} label="When"><%= elem(row, 1) %></:col>
+      <:col :let={row} label="Where"><%= elem(row, 2) %></:col>
+      <:col :let={row} label="Random"><%= elem(row, 3) %></:col>
     </.table>
     """
   end
@@ -137,7 +137,7 @@ defmodule GlobalClusterWeb.PageLive do
     :mnesia.dirty_write({
       :example,
       DateTime.utc_now() |> DateTime.to_iso8601(),
-      :rand.uniform(1024),
+      Node.self() |> Atom.to_string() |> String.split("@") |> List.last(),
       :rand.uniform(1024)
     })
 
@@ -147,6 +147,7 @@ defmodule GlobalClusterWeb.PageLive do
   @impl true
   def handle_event("clear", _, socket) do
     :mnesia.clear_table(:example)
+
     {:noreply, socket}
   end
 end
