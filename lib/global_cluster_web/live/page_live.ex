@@ -27,13 +27,26 @@ defmodule GlobalClusterWeb.PageLive do
   def intro(assigns) do
     ~H"""
     <div>
-      This is tech demo running on four t3.nano instances. Each instance is running on a different continent.
+      The facts about this tech demo:
+      <ul>
+        <li>four virtual machines (VM)</li>
+        <li>each of them</li>
+        <ul>
+          <li>is running on a different continent</li>
+          <li>is an <a href="https://aws.amazon.com/ec2/instance-types/t3/">AWS t3.nano</a> instance</li>
+          <li>is running <a href="https://www.freebsd.org/de/">FreeBSD 14</a> as operating system</li>
+          <li>is connected to all other VMs in a <a href="https://www.wireguard.com/">wireguard</a> mesh</li>
+        </ul>
+        <li>all VMs run an Elixir application that</li>
+        <ul>
+          <li>is built using the <a href="https://www.phoenixframework.org/">Phoenix Framework</a></li>
+          <li>creates a cluster over all involved VMs using <a href="https://github.com/bitwalker/libcluster">libcluster</a></li>
+          <li>creates an in-memory <a href="https://en.wikipedia.org/wiki/Mnesia">mnesia database</a> using all nodes</li>
+        </ul>
+      </ul>
     </div>
     <div>
-      All VMs are using FreeBSD and are connected to each other using a wireguard mesh.
-    </div>
-    <div>
-      The application itself is built using the phoenix framework.
+      The hardest part about this tech demo? Glueing the infrastructure together.
     </div>
     """
   end
