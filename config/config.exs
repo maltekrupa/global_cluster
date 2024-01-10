@@ -12,7 +12,14 @@ config :global_cluster,
 
 # Configures the endpoint
 config :global_cluster, GlobalClusterWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "gc.nafn.de"],
+  check_origin: [
+    "http://gc.nafn.de",
+    "http://eu-central-1.gc.nafn.de",
+    "http://af-south-1.gc.nafn.de",
+    "http://ap-northeast-1.gc.nafn.de",
+    "http://sa-east-1.gc.nafn.de"
+  ],
   adapter: Phoenix.Endpoint.Cowboy2Adapter,
   render_errors: [
     formats: [html: GlobalClusterWeb.ErrorHTML, json: GlobalClusterWeb.ErrorJSON],
