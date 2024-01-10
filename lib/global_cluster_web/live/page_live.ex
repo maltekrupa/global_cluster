@@ -35,7 +35,7 @@ defmodule GlobalClusterWeb.PageLive do
           <li>is running on a different continent</li>
           <li>is an <a href="https://aws.amazon.com/ec2/instance-types/t3/">AWS t3.nano</a> instance</li>
           <li>is running <a href="https://www.freebsd.org/de/">FreeBSD 14</a> as operating system</li>
-          <li>is connected to all other VMs in a <a href="https://www.wireguard.com/">wireguard</a> mesh</li>
+          <li>is connected to all other VMs using a <a href="https://www.wireguard.com/">wireguard</a> mesh</li>
         </ul>
         <li>all VMs run an Elixir application that</li>
         <ul>
