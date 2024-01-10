@@ -19,6 +19,17 @@ provider "aws" {
     role_arn = "arn:aws:iam::220385822420:role/OrganizationAccountAccessRole"
   }
 }
+
+terraform {
+  required_providers {
+    dnsimple = {
+      source = "dnsimple/dnsimple"
+      version = "1.3.1"
+    }
+  }
+}
+
+provider "dnsimple" {}
 EOF
 }
 
