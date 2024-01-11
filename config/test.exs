@@ -12,3 +12,17 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :libcluster,
+  topologies: [
+    epmd: [
+      # The selected clustering strategy. Required.
+      strategy: Cluster.Strategy.Epmd,
+      # Configuration for the provided strategy. Optional.
+      config: [
+        hosts: [
+          :"a@127.0.0.1"
+        ]
+      ]
+    ]
+  ]
