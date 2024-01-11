@@ -4,7 +4,10 @@ defmodule GlobalClusterWeb.PageLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: :timer.send_interval(1000, self(), :tick)
+    if connected?(socket) do
+      :timer.send_interval(1000, self(), :tick)
+      send(self(), :add)
+    end
 
     {:ok,
      socket
@@ -72,7 +75,6 @@ defmodule GlobalClusterWeb.PageLive do
     ~H"""
     <h3>Mnesia table content</h3>
     <div>
-      <.button phx-click="add">Add entry</.button>
       <.button phx-click="clear">Clear table</.button>
     </div>
     <br />
@@ -134,6 +136,28 @@ defmodule GlobalClusterWeb.PageLive do
   #   |> assign(os_version: os_version)
   # end
 
+  defp add_visitor do
+    node_name =
+      Node.self()
+      |> Atom.to_string()
+      |> String.split("@")
+      |> List.last()
+
+    current_counter =
+      case :mnesia.transaction(fn -> :mnesia.read({:visitor, node_name}) end) do
+        {:atomic, []} -> 0
+        {:atomic, x} -> x |> List.first() |> elem(2)
+      end
+
+    :mnesia.transaction(fn ->
+      :mnesia.write({
+        :visitor,
+        node_name,
+        current_counter + 1
+      })
+    end)
+  end
+
   @impl true
   def handle_info(:tick, socket) do
     {:noreply,
@@ -145,25 +169,8 @@ defmodule GlobalClusterWeb.PageLive do
   end
 
   @impl true
-  def handle_event("add", _, socket) do
-    node_name =
-      Node.self()
-      |> Atom.to_string()
-      |> String.split("@")
-      |> List.last()
-
-    current_counter =
-      case :mnesia.dirty_read({:visitor, node_name}) do
-        [] -> 0
-        x -> x |> List.first() |> elem(2)
-      end
-
-    :mnesia.dirty_write({
-      :visitor,
-      node_name,
-      current_counter + 1
-    })
-
+  def handle_info(:add, socket) do
+    add_visitor()
     {:noreply, socket}
   end
 
