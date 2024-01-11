@@ -36,23 +36,6 @@ config :mnesiac,
   # milliseconds, default is 600_000
   table_load_timeout: 600_000
 
-config :libcluster,
-  topologies: [
-    epmd_example: [
-      # The selected clustering strategy. Required.
-      strategy: Cluster.Strategy.Epmd,
-      # Configuration for the provided strategy. Optional.
-      config: [
-        hosts: [
-          :"global_cluster@eu-central-1",
-          :"global_cluster@af-south-1",
-          :"global_cluster@ap-northeast-1",
-          :"global_cluster@sa-east-1"
-        ]
-      ]
-    ]
-  ]
-
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

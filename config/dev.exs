@@ -53,7 +53,7 @@ config :global_cluster, GlobalClusterWeb.Endpoint,
 
 config :libcluster,
   topologies: [
-    epmd_example: [
+    epmd: [
       # The selected clustering strategy. Required.
       strategy: Cluster.Strategy.Epmd,
       # Configuration for the provided strategy. Optional.

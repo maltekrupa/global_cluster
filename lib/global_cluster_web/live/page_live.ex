@@ -98,7 +98,7 @@ defmodule GlobalClusterWeb.PageLive do
     topology = Application.get_env(:libcluster, :topologies)
 
     all_nodes =
-      topology[:epmd_example][:config][:hosts]
+      topology[:epmd][:config][:hosts]
       |> Enum.map(&Atom.to_string/1)
 
     socket

@@ -13,3 +13,20 @@ config :logger, level: :info
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+
+config :libcluster,
+  topologies: [
+    epmd: [
+      # The selected clustering strategy. Required.
+      strategy: Cluster.Strategy.Epmd,
+      # Configuration for the provided strategy. Optional.
+      config: [
+        hosts: [
+          :"global_cluster@eu-central-1",
+          :"global_cluster@af-south-1",
+          :"global_cluster@ap-northeast-1",
+          :"global_cluster@sa-east-1"
+        ]
+      ]
+    ]
+  ]

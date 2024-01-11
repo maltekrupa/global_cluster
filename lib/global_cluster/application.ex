@@ -8,7 +8,7 @@ defmodule GlobalCluster.Application do
   @impl true
   def start(_type, _args) do
     topology = Application.get_env(:libcluster, :topologies)
-    hosts = topology[:epmd_example][:config][:hosts]
+    hosts = topology[:epmd][:config][:hosts]
 
     children = [
       {Cluster.Supervisor, [topology, [name: GlobalCluster.ClusterSupervisor]]},
