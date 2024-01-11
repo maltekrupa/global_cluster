@@ -77,9 +77,8 @@ defmodule GlobalClusterWeb.PageLive do
     </div>
     <br />
     <.table id="rows" rows={@rows}>
-      <:col :let={row} label="When"><%= elem(row, 1) %></:col>
-      <:col :let={row} label="Where"><%= elem(row, 2) %></:col>
-      <:col :let={row} label="Random"><%= elem(row, 3) %></:col>
+      <:col :let={row} label="Where"><%= elem(row, 1) %></:col>
+      <:col :let={row} label="Visitor count"><%= elem(row, 2) %></:col>
     </.table>
     """
   end
@@ -119,7 +118,7 @@ defmodule GlobalClusterWeb.PageLive do
 
   defp put_table_rows(socket) do
     rows =
-      :ets.tab2list(:example)
+      :ets.tab2list(:visitor)
       |> Enum.sort(:desc)
 
     socket
@@ -147,11 +146,22 @@ defmodule GlobalClusterWeb.PageLive do
 
   @impl true
   def handle_event("add", _, socket) do
+    node_name =
+      Node.self()
+      |> Atom.to_string()
+      |> String.split("@")
+      |> List.last()
+
+    current_counter =
+      case :mnesia.dirty_read({:visitor, node_name}) do
+        [] -> 0
+        x -> x |> List.first() |> elem(2)
+      end
+
     :mnesia.dirty_write({
-      :example,
-      DateTime.utc_now() |> DateTime.to_iso8601(),
-      Node.self() |> Atom.to_string() |> String.split("@") |> List.last(),
-      :rand.uniform(1024)
+      :visitor,
+      node_name,
+      current_counter + 1
     })
 
     {:noreply, socket}
@@ -159,7 +169,7 @@ defmodule GlobalClusterWeb.PageLive do
 
   @impl true
   def handle_event("clear", _, socket) do
-    :mnesia.clear_table(:example)
+    :mnesia.clear_table(:visitor)
 
     {:noreply, socket}
   end

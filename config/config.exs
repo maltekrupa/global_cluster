@@ -29,10 +29,11 @@ config :global_cluster, GlobalClusterWeb.Endpoint,
   live_view: [signing_salt: "shmcSytl"]
 
 config :mnesiac,
-  stores: [GlobalCluster.ExampleStore],
+  stores: [GlobalCluster.VisitorStore],
+  # TODO: This seems to be useless?
   dir: ~c".mnesia/#{node()}",
-  # or :disc_copies
-  schema_type: :disc_copies,
+  # :ram_copies or :disc_copies
+  schema_type: :ram_copies,
   # milliseconds, default is 600_000
   table_load_timeout: 600_000
 
