@@ -37,4 +37,25 @@ defmodule GlobalCluster.VisitorStore do
       ram_copies: hosts
     ]
   end
+
+  @impl true
+  def init_store do
+    topology = Application.get_env(:libcluster, :topologies)
+    hosts = topology[:epmd][:config][:hosts]
+
+    :mnesia.create_table(Keyword.get(store_options(), :record_name, __MODULE__), store_options())
+
+    # Create an empty record for each node which looks something like this:
+    # {:visitor, :"node@ip", 0}
+    hosts
+    |> Enum.each(fn x ->
+      :mnesia.transaction(fn ->
+        :mnesia.write({
+          :visitor,
+          x,
+          0
+        })
+      end)
+    end)
+  end
 end
