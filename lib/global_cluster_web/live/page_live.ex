@@ -6,7 +6,6 @@ defmodule GlobalClusterWeb.PageLive do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       :timer.send_interval(1000, self(), :tick)
-      send(self(), :add)
     end
 
     {:ok,
@@ -120,22 +119,6 @@ defmodule GlobalClusterWeb.PageLive do
   #   |> assign(os_version: os_version)
   # end
 
-  defp add_visitor do
-    current_counter =
-      case :mnesia.transaction(fn -> :mnesia.read({:visitor, Node.self()}) end) do
-        {:atomic, []} -> 0
-        {:atomic, x} -> x |> List.first() |> elem(2)
-      end
-
-    :mnesia.transaction(fn ->
-      :mnesia.write({
-        :visitor,
-        Node.self(),
-        current_counter + 1
-      })
-    end)
-  end
-
   @impl true
   def handle_info(:tick, socket) do
     {:noreply,
@@ -144,12 +127,6 @@ defmodule GlobalClusterWeb.PageLive do
      |> put_libcluster_nodes()
      |> put_all_nodes()
      |> put_table_rows()}
-  end
-
-  @impl true
-  def handle_info(:add, socket) do
-    add_visitor()
-    {:noreply, socket}
   end
 
   @impl true

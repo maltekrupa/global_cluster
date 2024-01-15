@@ -49,5 +49,24 @@ defmodule GlobalClusterWeb.Endpoint do
   plug(Plug.MethodOverride)
   plug(Plug.Head)
   plug(Plug.Session, @session_options)
+  plug(:counter)
   plug(GlobalClusterWeb.Router)
+
+  def counter(conn, _opts) do
+    current_counter =
+      case :mnesia.transaction(fn -> :mnesia.read({:visitor, Node.self()}) end) do
+        {:atomic, []} -> 0
+        {:atomic, x} -> x |> List.first() |> elem(2)
+      end
+
+    :mnesia.transaction(fn ->
+      :mnesia.write({
+        :visitor,
+        Node.self(),
+        current_counter + 1
+      })
+    end)
+
+    conn
+  end
 end
