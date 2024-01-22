@@ -13,6 +13,7 @@ defmodule GlobalCluster.Application do
     children = [
       {Cluster.Supervisor, [topology, [name: GlobalCluster.ClusterSupervisor]]},
       {Mnesiac.Supervisor, [hosts, [name: GlobalCluster.MnesiacSupervisor]]},
+      GlobalCluster.VisitorCounter,
       GlobalClusterWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:global_cluster, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GlobalCluster.PubSub},
