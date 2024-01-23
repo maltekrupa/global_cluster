@@ -51,8 +51,23 @@ defmodule GlobalCluster.VisitorCounter do
 
   @impl true
   def handle_info(:update_database, state) do
-    Enum.each(state, fn {node, counter} ->
-      :ets.update_counter(:visitor, node, counter)
+    state
+    |> Enum.each(fn {node, counter} ->
+      current_counter_transaction = fn -> :mnesia.read({:visitor, node}) end
+
+      current_counter =
+        case :mnesia.transaction(current_counter_transaction) do
+          {:atomic, []} -> 0
+          {:atomic, x} -> x |> List.first() |> elem(2)
+        end
+
+      :mnesia.transaction(fn ->
+        :mnesia.write({
+          :visitor,
+          node,
+          current_counter + counter
+        })
+      end)
     end)
 
     schedule_update()
