@@ -13,11 +13,11 @@ defmodule GlobalCluster.VisitorCounter do
   def start_link(default) do
     case GenServer.start_link(__MODULE__, default, name: {:global, __MODULE__}) do
       {:ok, pid} ->
-        Logger.info("---- #{__MODULE__} worker started")
+        Logger.info("#{__MODULE__} worker started")
         {:ok, pid}
 
       {:error, {:already_started, pid}} ->
-        Logger.info("---- #{__MODULE__} worker already running")
+        Logger.info("#{__MODULE__} worker already running")
         {:ok, pid}
     end
   end
@@ -53,15 +53,12 @@ defmodule GlobalCluster.VisitorCounter do
   def handle_info(:update_database, state) do
     state
     |> Enum.each(fn {node, counter} ->
-      current_counter_transaction = fn -> :mnesia.read({:visitor, node}) end
-
-      current_counter =
-        case :mnesia.transaction(current_counter_transaction) do
-          {:atomic, []} -> 0
-          {:atomic, x} -> x |> List.first() |> elem(2)
-        end
-
       :mnesia.transaction(fn ->
+        current_counter =
+          :mnesia.read({:visitor, node})
+          |> List.first()
+          |> elem(2)
+
         :mnesia.write({
           :visitor,
           node,
