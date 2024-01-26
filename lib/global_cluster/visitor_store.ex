@@ -47,9 +47,9 @@ defmodule GlobalCluster.VisitorStore do
 
     # Create an empty record for each node which looks something like this:
     # {:visitor, :"node@ip", 0}
-    hosts
-    |> Enum.each(fn x ->
-      :mnesia.transaction(fn ->
+    :mnesia.transaction(fn ->
+      hosts
+      |> Enum.each(fn x ->
         :mnesia.write({
           :visitor,
           x,
