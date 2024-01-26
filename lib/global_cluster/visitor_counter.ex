@@ -38,6 +38,7 @@ defmodule GlobalCluster.VisitorCounter do
   @impl GenServer
   def init(_opts) do
     schedule_update()
+    init_entries()
 
     {:ok, %{}}
   end
@@ -74,5 +75,22 @@ defmodule GlobalCluster.VisitorCounter do
 
   defp schedule_update do
     Process.send_after(self(), :update_database, 1_000)
+  end
+
+  defp init_entries do
+    topology = Application.get_env(:libcluster, :topologies)
+    hosts = topology[:epmd][:config][:hosts]
+
+    do_init_entries(hosts)
+  end
+
+  defp do_init_entries([]), do: nil
+
+  defp do_init_entries([host | t]) do
+    if :mnesia.dirty_read(:visitor, host) == [] do
+      :mnesia.transaction(fn -> :mnesia.write({:visitor, host, 0}) end)
+    end
+
+    do_init_entries(t)
   end
 end
