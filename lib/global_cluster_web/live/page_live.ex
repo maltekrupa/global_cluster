@@ -20,15 +20,25 @@ defmodule GlobalClusterWeb.PageLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.intro />
+    <.welcome />
     <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} />
+    <hr />
+    <.details />
     """
   end
 
-  def intro(assigns) do
+  def welcome(assigns) do
     ~H"""
     <div>
-      The facts about this tech demo:
+      This is a globally distributed application with a shared in-memory database that contains a visitor counter.
+    </div>
+    """
+  end
+
+  def details(assigns) do
+    ~H"""
+    <div>
+      Details about this tech demo:
       <ul>
         <li>four virtual machines (VM)</li>
         <li>each of them</li>
@@ -47,9 +57,6 @@ defmodule GlobalClusterWeb.PageLive do
       </ul>
     </div>
     <div>
-      <b>Note:</b> This demo does not use anycast or regional DNS to steer you a more local node.
-    </div>
-    <div>
       Involved nodes:
       <ul>
         <li><a href="http://eu-central-1.gc.nafn.de">Europe - Frankfurt</a></li>
@@ -57,6 +64,9 @@ defmodule GlobalClusterWeb.PageLive do
         <li><a href="http://ap-northeast-1.gc.nafn.de">Asia Pacific - Tokyo</a></li>
         <li><a href="http://sa-east-1.gc.nafn.de">South America - Sao Paulo</a></li>
       </ul>
+    <div>
+      <b>Note:</b> This demo does not use anycast or regional DNS to steer you a more local node.
+    </div>
     </div>
     """
   end
