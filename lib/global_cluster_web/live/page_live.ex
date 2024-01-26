@@ -2,6 +2,8 @@ defmodule GlobalClusterWeb.PageLive do
   use GlobalClusterWeb, :live_view
   use Phoenix.Component
 
+  embed_templates("templates/*")
+
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket) do
@@ -22,6 +24,8 @@ defmodule GlobalClusterWeb.PageLive do
     ~H"""
     <.welcome />
     <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} />
+    <br />
+    <.world_map all_nodes={@all_nodes} mnesia_nodes={@mnesia_nodes} />
     <hr />
     <.details />
     """
