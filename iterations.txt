@@ -2,33 +2,13 @@
 
 Counting visitors on a shared and distributed global datastore.
 
-## Function to increase the counter by one
-
-```elixir
-defp increase_counter(node \\ Node.self()) do
-  current_counter =
-    case :mnesia.transaction(fn -> :mnesia.read({:visitor, node}) end) do
-      {:atomic, []} -> 0
-      {:atomic, x} -> x |> List.first() |> elem(2)
-    end
-
-  :mnesia.transaction(fn ->
-    :mnesia.write({
-      :visitor,
-      node,
-      current_counter + 1
-    })
-  end)
-end
-```
-
 ## First iteration - mount function
 
 Diff:
 - https://github.com/maltekrupa/global_cluster/commit/c88e8b32ac038391de1bbaecef5ac0dff79faaeb
 - git show c88e8b3
 
-Initially I just added a call to the `increase_counter` function to the mount function of the liveview.
+I added a call to the `increase_counter` function to the mount function of the liveview.
 
 Problems:
 - Only seems to work when client makes use of JavaScript (wrk benchmark didn't increase the number) <- not so sure about that.
@@ -102,6 +82,20 @@ Instead of two transactions I reduced it to one.
 
 Problem:
 - We still create one transaction per node
+
+### Seventh iteration - refactor mnesiac store init
+
+Diff
+- https://github.com/maltekrupa/global_cluster/commit/76e20db907bdce3a811b5d1019b1323fc43676e9
+- 76e20db
+
+Whenever a node restarted (for whatever reason) it re-initialized the store
+which set every record to zero. This is now fixed and the counter just keeps on growing.
+
+Not even a deployment should reset the counter now. I think.
+
+Problem:
+- Too many transactions (one per node) which update the counter too slow
 
 ### Next
 
