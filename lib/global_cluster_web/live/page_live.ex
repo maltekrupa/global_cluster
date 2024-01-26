@@ -73,7 +73,7 @@ defmodule GlobalClusterWeb.PageLive do
       <:col :let={node} label="Node"><%= node |> Atom.to_string() |> String.split("@") |> List.last %></:col>
       <:col :let={node} label="libcluster"><%= if node in @libcluster_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="mnesia"><%= if node in @mnesia_nodes, do: "connected", else: "disconnected" %></:col>
-      <:col :let={node} label="visitors"><%= Enum.filter(@table_rows, &match?({:visitor, ^node, _}, &1)) |> List.first |> elem(2) %></:col>
+      <:col :let={node} label="visitors"><%= Map.get(@table_rows, node) %></:col>
     </.table>
     """
   end
@@ -105,6 +105,11 @@ defmodule GlobalClusterWeb.PageLive do
 
   defp put_table_rows(socket) do
     rows = :ets.tab2list(:visitor)
+
+    rows =
+      Enum.reduce(rows, %{}, fn {_, node, counter}, acc ->
+        Map.put(acc, node, counter)
+      end)
 
     socket
     |> assign(table_rows: rows)
