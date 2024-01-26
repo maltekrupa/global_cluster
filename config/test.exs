@@ -21,7 +21,7 @@ config :libcluster,
       # Configuration for the provided strategy. Optional.
       config: [
         hosts: [
-          :"a@127.0.0.1"
+          :nonode@nohost
         ]
       ]
     ]
