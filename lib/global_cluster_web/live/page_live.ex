@@ -23,6 +23,8 @@ defmodule GlobalClusterWeb.PageLive do
   def render(assigns) do
     ~H"""
     <.welcome />
+    <br />
+    <.job_ad />
     <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} />
     <br />
     <.world_map all_nodes={@all_nodes} mnesia_nodes={@mnesia_nodes} />
@@ -34,15 +36,23 @@ defmodule GlobalClusterWeb.PageLive do
   def welcome(assigns) do
     ~H"""
     <div>
-      This is a globally distributed application with a shared in-memory database that contains a visitor counter.
+      This is a globally distributed Elixir application with a shared in-memory mnesia database that provides a visitor counter.
     </div>
+    """
+  end
+
+  def job_ad(assigns) do
+    ~H"""
+    <div><b>HIRE ME</b></div>
+    <div>I'm looking for an elixir job in a company that will help me grow.</div>
+    <div><a href="mailto:globalcluster@nafn.de">eMail</a> | <a href="https://nafn.de/contact/">homepage</a></div>
     """
   end
 
   def details(assigns) do
     ~H"""
     <div>
-      Details about this tech demo:
+      Technical details:
       <ul>
         <li>four virtual machines (VM)</li>
         <li>each of them</li>
