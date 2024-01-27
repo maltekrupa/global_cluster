@@ -23,12 +23,13 @@ defmodule GlobalClusterWeb.PageLive do
   def render(assigns) do
     ~H"""
     <.welcome />
-    <br />
+    <h3>Hire Me!</h3>
     <.job_ad />
+    <h3>Node table</h3>
     <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} />
-    <br />
+    <h3>Node map</h3>
     <.world_map all_nodes={@all_nodes} mnesia_nodes={@mnesia_nodes} />
-    <hr />
+    <h3>Technical details</h3>
     <.details />
     """
   end
@@ -36,14 +37,17 @@ defmodule GlobalClusterWeb.PageLive do
   def welcome(assigns) do
     ~H"""
     <div>
-      This is a globally distributed Elixir application with a shared in-memory mnesia database that provides a visitor counter.
+      <p>This is a globally distributed Elixir application with a shared in-memory mnesia database that provides a visitor counter.</p>
+    </div>
+    <h3>Why?</h3>
+    <div>
+      <p>Why not? This is a <b>technical demonstration</b>. Nothing more, nothing less. It does not provide anything else than an <b>opportunity to learn</b>.</p>
     </div>
     """
   end
 
   def job_ad(assigns) do
     ~H"""
-    <div><b>HIRE ME</b></div>
     <div>I'm looking for an elixir job in a company that will help me grow.</div>
     <div><a href="mailto:globalcluster@nafn.de">eMail</a> | <a href="https://nafn.de/contact/">homepage</a></div>
     """
@@ -92,7 +96,6 @@ defmodule GlobalClusterWeb.PageLive do
 
   def mnesia_cluster(assigns) do
     ~H"""
-    <h3>Nodes</h3>
     <.table id="nodes" rows={@all_nodes}>
       <:col :let={node} label="Node"><%= node |> Atom.to_string() |> String.split("@") |> List.last %></:col>
       <:col :let={node} label="libcluster"><%= if node in @libcluster_nodes, do: "connected", else: "disconnected" %></:col>
