@@ -41,7 +41,7 @@ defmodule GlobalClusterWeb.PageLive do
     </div>
     <h3>Why?</h3>
     <div>
-      <p>Why not? This is a <b>technical demonstration</b>. Nothing more, nothing less. It does not provide anything else than an <b>opportunity to learn</b>.</p>
+      <p>Why not? It's a <b>technical demonstration</b>. Nothing more, nothing less. It does not provide anything useful other than an <b>opportunity to learn</b>.</p>
     </div>
     """
   end
