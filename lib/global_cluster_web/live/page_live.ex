@@ -141,6 +141,14 @@ defmodule GlobalClusterWeb.PageLive do
     |> assign(table_rows: rows)
   end
 
+  defp svg_point_color(node, mnesia_nodes, all_nodes) do
+    cond do
+      node in mnesia_nodes and node in all_nodes -> "#28fc03"
+      node in all_nodes -> "#0800ff"
+      true -> "red"
+    end
+  end
+
   # defp put_os_version(socket) do
   #   {os, 0} = System.cmd("uname", ["-o"])
   #   {os_version, 0} = System.cmd("uname", ["-r"])
