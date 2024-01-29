@@ -23,7 +23,7 @@ defmodule GlobalClusterWeb.PageLive do
   def render(assigns) do
     ~H"""
     <.welcome />
-    <h3>Hire Me!</h3>
+    <h3>You can hire me!</h3>
     <.job_ad />
     <h3>Node table</h3>
     <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} />
@@ -48,7 +48,7 @@ defmodule GlobalClusterWeb.PageLive do
 
   def job_ad(assigns) do
     ~H"""
-    <div>I'm looking for an elixir job in a company that will help me grow.</div>
+    <div>I'm looking for an Elixir job in a company that will help me grow as a software engineer.</div>
     <div><a href="mailto:globalcluster@nafn.de">eMail</a> | <a href="https://nafn.de/contact/">homepage</a></div>
     """
   end
