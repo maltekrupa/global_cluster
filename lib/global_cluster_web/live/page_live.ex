@@ -56,7 +56,6 @@ defmodule GlobalClusterWeb.PageLive do
   def details(assigns) do
     ~H"""
     <div>
-      Technical details:
       <ul>
         <li>four virtual machines (VM)</li>
         <li>each of them</li>
