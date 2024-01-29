@@ -28,7 +28,7 @@ defmodule GlobalClusterWeb.PageLive do
     <h3>Node table</h3>
     <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} />
     <h3>Node map</h3>
-    <.world_map all_nodes={@all_nodes} mnesia_nodes={@mnesia_nodes} />
+    <.world_map libcluster_nodes={@libcluster_nodes} mnesia_nodes={@mnesia_nodes} />
     <h3>Technical details</h3>
     <.details />
     """
@@ -141,10 +141,10 @@ defmodule GlobalClusterWeb.PageLive do
     |> assign(table_rows: rows)
   end
 
-  defp svg_point_color(node, mnesia_nodes, all_nodes) do
+  defp svg_point_color(node, mnesia_nodes, libcluster_nodes) do
     cond do
-      node in mnesia_nodes and node in all_nodes -> "#28fc03"
-      node in all_nodes -> "#0800ff"
+      node in mnesia_nodes and node in libcluster_nodes -> "#28fc03"
+      node in libcluster_nodes -> "#0800ff"
       true -> "red"
     end
   end
