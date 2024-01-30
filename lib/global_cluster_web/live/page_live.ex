@@ -16,7 +16,8 @@ defmodule GlobalClusterWeb.PageLive do
      |> put_mnesia_nodes()
      |> put_libcluster_nodes()
      |> put_all_nodes()
-     |> put_table_rows()}
+     |> put_table_rows()
+     |> put_http_links()}
   end
 
   @impl true
@@ -26,7 +27,7 @@ defmodule GlobalClusterWeb.PageLive do
     <h3>You can hire me!</h3>
     <.job_ad />
     <h3>Node table</h3>
-    <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} />
+    <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} http_links={@http_links} />
     <h3>Node map</h3>
     <.world_map libcluster_nodes={@libcluster_nodes} mnesia_nodes={@mnesia_nodes} />
     <h3>Technical details</h3>
@@ -91,12 +92,13 @@ defmodule GlobalClusterWeb.PageLive do
   attr(:mnesia_nodes, :list, required: true)
   attr(:libcluster_nodes, :list, required: true)
   attr(:all_nodes, :list, required: true)
-  attr(:table_rows, :list, required: true)
+  attr(:table_rows, :map, required: true)
+  attr(:http_links, :map, required: true)
 
   def mnesia_cluster(assigns) do
     ~H"""
     <.table id="nodes" rows={@all_nodes}>
-      <:col :let={node} label="Node"><%= node |> Atom.to_string() |> String.split("@") |> List.last %></:col>
+      <:col :let={node} label="Node"><%= raw(Map.get(@http_links, node)) %></:col>
       <:col :let={node} label="libcluster"><%= if node in @libcluster_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="mnesia"><%= if node in @mnesia_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="visitors"><%= Map.get(@table_rows, node) %></:col>
@@ -141,6 +143,19 @@ defmodule GlobalClusterWeb.PageLive do
     |> assign(table_rows: rows)
   end
 
+  defp put_http_links(socket) do
+    domain = "gc.nafn.de"
+
+    http_links =
+      Enum.reduce(socket.assigns.all_nodes, %{}, fn node, acc ->
+        normalized = node |> Atom.to_string() |> String.split("@") |> List.last()
+        Map.put(acc, node, "<a href=\"http://#{normalized}.#{domain}\">#{normalized}</a>")
+      end)
+
+    socket
+    |> assign(http_links: http_links)
+  end
+
   defp svg_point_color(node, mnesia_nodes, libcluster_nodes) do
     cond do
       node in mnesia_nodes and node in libcluster_nodes -> "#28fc03"
@@ -165,7 +180,8 @@ defmodule GlobalClusterWeb.PageLive do
      |> put_mnesia_nodes()
      |> put_libcluster_nodes()
      |> put_all_nodes()
-     |> put_table_rows()}
+     |> put_table_rows()
+     |> put_http_links()}
   end
 
   @impl true
