@@ -24,12 +24,14 @@ defmodule GlobalClusterWeb.PageLive do
   def render(assigns) do
     ~H"""
     <.welcome />
-    <h3>You can hire me!</h3>
-    <.job_ad />
     <h3>Node table</h3>
     <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} http_links={@http_links} />
     <h3>Node map</h3>
     <.world_map libcluster_nodes={@libcluster_nodes} mnesia_nodes={@mnesia_nodes} />
+    <h3>You can hire me!</h3>
+    <.job_ad />
+    <h3>Why?</h3>
+    <.why />
     <h3>Technical details</h3>
     <.details />
     """
@@ -40,7 +42,11 @@ defmodule GlobalClusterWeb.PageLive do
     <div>
       <p>This is a globally distributed Elixir application with a shared in-memory mnesia database that provides a visitor counter.</p>
     </div>
-    <h3>Why?</h3>
+    """
+  end
+
+  def why(assigns) do
+    ~H"""
     <div>
       <p>The BEAM (the runtime Elixir uses) is said to be very robust and I wanted to see how complicated it gets when you try to build a clustered application. The default scenario would've been to run multiple high-performance servers close to each other so you can make use of a low-latency high-bandwith network. I instead choose the path of using virtual servers with very limited resources connected over a long distance.</p>
       <p>Did it work? Yes. Was it hard to build? No. Is it fast? Not really. :)</p>
@@ -72,7 +78,6 @@ defmodule GlobalClusterWeb.PageLive do
         <li>cluster creation is done using <a href="https://github.com/bitwalker/libcluster">libcluster</a></li>
         <li>the in-memory database is making use of <a href="https://en.wikipedia.org/wiki/Mnesia">mnesia</a></li>
       </ul>
-      <p><b>Note:</b> This demonstration does not use anycast or regional DNS to steer you a more local node.</p>
     </div>
     <div>
       Involved nodes:
@@ -82,6 +87,9 @@ defmodule GlobalClusterWeb.PageLive do
         <li><a href="http://ap-northeast-1.gc.nafn.de">Asia Pacific - Tokyo</a></li>
         <li><a href="http://sa-east-1.gc.nafn.de">South America - Sao Paulo</a></li>
       </ul>
+    </div>
+    <div>
+      <p><b>Note:</b> This demonstration does not use anycast or regional DNS to steer you a more local node. <a href="http://gc.nafn.de">gc.nafn.de</a> is a CNAME to eu-central-1.</p>
     </div>
     """
   end
@@ -99,7 +107,6 @@ defmodule GlobalClusterWeb.PageLive do
       <:col :let={node} label="libcluster"><%= if node in @libcluster_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="mnesia"><%= if node in @mnesia_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="Visitors"><%= Map.get(@table_rows, node) %></:col>
-      <:col :let={node}><%= if node == Node.self(), do: "<-- You are here", else: nil %></:col>
     </.table>
     """
   end
