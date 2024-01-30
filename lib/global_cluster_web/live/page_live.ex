@@ -42,7 +42,9 @@ defmodule GlobalClusterWeb.PageLive do
     </div>
     <h3>Why?</h3>
     <div>
-      <p>Why not? It's a <b>technical demonstration</b>. Nothing more, nothing less. It does not provide anything useful other than an <b>opportunity to learn</b>.</p>
+      <p>The BEAM (the runtime Elixir uses) is said to be very robust and I wanted to see how complicated it gets when you try to build a clustered application. The default scenario would've been to run multiple high-performance servers close to each other so you can make use of a low-latency high-bandwith network. I instead choose the path of using virtual servers with very limited resources connected over a long distance.</p>
+      <p>Did it work? Yes. Was it hard to build? No. Is it fast? Not really. :)</p>
+      <p>At the end it is a <b>technical demonstration</b>. Nothing more, nothing less. It does not provide anything useful other than an <b>opportunity to learn</b>. And of course a strange way to burn money.</p>
     </div>
     """
   end
@@ -57,22 +59,20 @@ defmodule GlobalClusterWeb.PageLive do
   def details(assigns) do
     ~H"""
     <div>
+      Some facts about the four virtual machines:
       <ul>
-        <li>four virtual machines (VM)</li>
-        <li>each of them</li>
-        <ul>
-          <li>is running on a different continent</li>
-          <li>is an <a href="https://aws.amazon.com/ec2/instance-types/t3/">AWS t3.nano</a> instance (2 vcpu, 5% baseline performance/vcpu, 512MB memory)</li>
-          <li>is running <a href="https://www.freebsd.org/">FreeBSD 14</a> as operating system</li>
-          <li>is connected to all other VMs using a <a href="https://www.wireguard.com/">wireguard</a> mesh</li>
-        </ul>
-        <li>all VMs run an Elixir application that</li>
-        <ul>
-          <li>is built using the <a href="https://www.phoenixframework.org/">Phoenix Framework</a></li>
-          <li>creates a cluster over all involved VMs using <a href="https://github.com/bitwalker/libcluster">libcluster</a></li>
-          <li>creates an in-memory <a href="https://en.wikipedia.org/wiki/Mnesia">mnesia database</a> using all nodes</li>
-        </ul>
+        <li>they're <a href="https://aws.amazon.com/ec2/instance-types/t3/">AWS t3.nano</a> instances (2 vcpu, 5% baseline performance/vcpu, 512MB memory)</li>
+        <li>each of them runs on a different continent</li>
+        <li>they use <a href="https://www.freebsd.org/">FreeBSD 14</a> as operating system</li>
+        <li>they're interconnected using a <a href="https://www.wireguard.com/">wireguard</a> mesh</li>
       </ul>
+      Some facts about the application:
+      <ul>
+        <li>it is built using the <a href="https://www.phoenixframework.org/">Phoenix Framework</a></li>
+        <li>cluster creation is done using <a href="https://github.com/bitwalker/libcluster">libcluster</a></li>
+        <li>the in-memory database is making use of <a href="https://en.wikipedia.org/wiki/Mnesia">mnesia</a></li>
+      </ul>
+      <p><b>Note:</b> This demonstration does not use anycast or regional DNS to steer you a more local node.</p>
     </div>
     <div>
       Involved nodes:
@@ -82,9 +82,6 @@ defmodule GlobalClusterWeb.PageLive do
         <li><a href="http://ap-northeast-1.gc.nafn.de">Asia Pacific - Tokyo</a></li>
         <li><a href="http://sa-east-1.gc.nafn.de">South America - Sao Paulo</a></li>
       </ul>
-    <div>
-      <b>Note:</b> This demo does not use anycast or regional DNS to steer you a more local node.
-    </div>
     </div>
     """
   end
@@ -101,7 +98,8 @@ defmodule GlobalClusterWeb.PageLive do
       <:col :let={node} label="Node"><%= raw(Map.get(@http_links, node)) %></:col>
       <:col :let={node} label="libcluster"><%= if node in @libcluster_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="mnesia"><%= if node in @mnesia_nodes, do: "connected", else: "disconnected" %></:col>
-      <:col :let={node} label="visitors"><%= Map.get(@table_rows, node) %></:col>
+      <:col :let={node} label="Visitors"><%= Map.get(@table_rows, node) %></:col>
+      <:col :let={node}><%= if node == Node.self(), do: "<-- You are here", else: nil %></:col>
     </.table>
     """
   end
