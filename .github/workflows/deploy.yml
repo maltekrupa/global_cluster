@@ -28,7 +28,7 @@ jobs:
           - 54.248.160.154  # sa-east-1
           - 54.207.241.117  # ap-northeast-1
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Add erlang to PATH
         run: echo "/usr/local/lib/erlang26/bin" >> $GITHUB_PATH
       - name: Download hex
