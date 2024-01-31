@@ -41,6 +41,7 @@ defmodule GlobalClusterWeb.PageLive do
     ~H"""
     <div>
       <p>This is a globally distributed Elixir application with a shared in-memory mnesia database that provides a visitor counter.</p>
+      <p>You can find the code on github: <a href="https://github.com/maltekrupa/global_cluster">maltekrupa/global_cluster</a>.</p>
     </div>
     """
   end
