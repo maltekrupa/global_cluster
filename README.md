@@ -11,12 +11,12 @@ If it really is down, check out some archived links:
 - http://archive.today/2TUVy
 - https://web.archive.org/web/20240203080949/http://gc.nafn.de/
 
-## Iterations
+# Iterations
 
 As soon as the infrastructure was up and running, I started working on the
 application. This is what happened.
 
-### First iteration - mount function
+## First iteration - mount function
 
 Diff:
 - https://github.com/maltekrupa/global_cluster/commit/c88e8b32ac038391de1bbaecef5ac0dff79faaeb
@@ -28,7 +28,7 @@ Problems:
 - Only seems to work when client makes use of JavaScript (wrk benchmark didn't increase the number) <- not so sure about that.
 - Misses requests if you reload fast enough
 
-### Second iteration - custom plug
+## Second iteration - custom plug
 
 Diff:
 - https://github.com/maltekrupa/global_cluster/commit/acd5d4eff57ddd55e7d0e8cbc7da773d59aa371f
@@ -42,7 +42,7 @@ Problems:
 - Request is blocked by mnesia transaction
 - Very slow (~1,5 requests per second)
 
-### Third iteration - genserver
+## Third iteration - genserver
 
 Diff:
 - https://github.com/maltekrupa/global_cluster/commit/2d54ac1610bebd494915c727d082332d654cbc35
@@ -57,7 +57,7 @@ The requests are not blocked anymore, but the time until all the messages are pr
 Problems:
 - Very slow update processing
 
-### Fourth iteration - sum up before update
+## Fourth iteration - sum up before update
 
 Diff:
 - https://github.com/maltekrupa/global_cluster/commit/8d8e1ee062e07998b315607b56981657a4d2891b
@@ -73,7 +73,7 @@ One for each node to get the current state and one for each node to update the n
 Problem:
 - rather slow because of the amount of transactions
 
-### Fifth iteration - reduce complexity (reverted)
+## Fifth iteration - reduce complexity (reverted)
 
 Diff:
 - https://github.com/maltekrupa/global_cluster/commit/8e5bbc6840007062bef9b12aa4f047fbd9321586
@@ -85,7 +85,7 @@ Problem:
 - :ets.update_counter is not a transaction and is only available on the node it
   was run on. All other nodes do not receive the update.
 
-### Sixth iteration - reduce amount of transactions
+## Sixth iteration - reduce amount of transactions
 
 Diff:
 - https://github.com/maltekrupa/global_cluster/commit/1c948629f8f04d6e922115b531e084923c0c82cf
@@ -97,7 +97,7 @@ Instead of two transactions I reduced it to one.
 Problem:
 - We still create one transaction per node
 
-### Seventh iteration - refactor mnesiac store init
+## Seventh iteration - refactor mnesiac store init
 
 Diff
 - https://github.com/maltekrupa/global_cluster/commit/76e20db907bdce3a811b5d1019b1323fc43676e9
@@ -111,11 +111,11 @@ Not even a deployment should reset the counter now. I think.
 Problem:
 - Too many transactions (one per node) which update the counter too slow
 
-### Next
+## Next
 
 The next iteration should reduce the amount of transactions to one.
 
-## Local development
+# Local development
 
 If you only need one node, start it via:
 
