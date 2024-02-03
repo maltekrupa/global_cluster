@@ -9,7 +9,7 @@ inputs = merge(local.regional_vars.locals)
 # Provider to use for all regions
 # Uses region from <region>/region.tfvars file
 generate "provider" {
-  path = "provider.tf"
+  path = "versions_override.tf"
   if_exists = "overwrite_terragrunt"
   contents = <<EOF
 provider "aws" {
