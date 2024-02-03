@@ -34,9 +34,12 @@ include {
 inputs = {
   base_domain    = "nafn.de"
 
-  intro          = dependency.eu_central_1.outputs.instance_public_ipv4
-  eu_central_1   = dependency.eu_central_1.outputs.instance_public_ipv4
-  af_south_1     = dependency.af_south_1.outputs.instance_public_ipv4
-  ap_northeast_1 = dependency.ap_northeast_1.outputs.instance_public_ipv4
-  sa_east_1      = dependency.sa_east_1.outputs.instance_public_ipv4
+  eu_central_1_v4   = dependency.eu_central_1.outputs.instance_public_ipv4
+  eu_central_1_v6   = dependency.eu_central_1.outputs.instance_public_ipv6
+  af_south_1_v4     = dependency.af_south_1.outputs.instance_public_ipv4
+  af_south_1_v6     = dependency.af_south_1.outputs.instance_public_ipv6
+  ap_northeast_1_v4 = dependency.ap_northeast_1.outputs.instance_public_ipv4
+  ap_northeast_1_v6 = dependency.ap_northeast_1.outputs.instance_public_ipv6
+  sa_east_1_v4      = dependency.sa_east_1.outputs.instance_public_ipv4
+  sa_east_1_v6      = dependency.sa_east_1.outputs.instance_public_ipv6
 }
