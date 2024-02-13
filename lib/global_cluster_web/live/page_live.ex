@@ -16,7 +16,7 @@ defmodule GlobalClusterWeb.PageLive do
     {:ok,
      socket
      |> assign(:page_title, "Global Cluster - Tech Demo")
-     |> assign(user_count: GlobalClusterWeb.Presence.count_online_users(Node.self()))
+     |> assign(user_count: GlobalClusterWeb.Presence.count_online_users())
      |> put_mnesia_nodes()
      |> put_libcluster_nodes()
      |> put_all_nodes()
@@ -204,7 +204,7 @@ defmodule GlobalClusterWeb.PageLive do
   end
 
   def handle_info(%{event: "presence_diff", payload: _payload}, socket) do
-    user_count = GlobalClusterWeb.Presence.count_online_users(Node.self())
+    user_count = GlobalClusterWeb.Presence.count_online_users()
 
     {:noreply, assign(socket, user_count: user_count)}
   end

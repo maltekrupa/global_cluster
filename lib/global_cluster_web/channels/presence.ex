@@ -13,13 +13,9 @@ defmodule GlobalClusterWeb.Presence do
     {:ok, %{}}
   end
 
-  def count_online_users(node) do
-    node =
-      node
-      |> Atom.to_string()
-
+  def count_online_users do
     list("online_users")
-    |> Enum.reduce(%{}, fn {^node, presence}, acc ->
+    |> Enum.reduce(%{}, fn {node, presence}, acc ->
       Map.put(
         acc,
         node |> String.to_atom(),
