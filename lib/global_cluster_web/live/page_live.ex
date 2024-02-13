@@ -8,11 +8,15 @@ defmodule GlobalClusterWeb.PageLive do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       :timer.send_interval(1000, self(), :tick)
+
+      GlobalClusterWeb.Presence.track_user(Node.self(), %{})
+      GlobalClusterWeb.Presence.subscribe()
     end
 
     {:ok,
      socket
      |> assign(:page_title, "Global Cluster - Tech Demo")
+     |> assign(user_count: GlobalClusterWeb.Presence.count_online_users(Node.self()))
      |> put_mnesia_nodes()
      |> put_libcluster_nodes()
      |> put_all_nodes()
@@ -25,7 +29,14 @@ defmodule GlobalClusterWeb.PageLive do
     ~H"""
     <.welcome />
     <h3>Node table</h3>
-    <.mnesia_cluster mnesia_nodes={@mnesia_nodes} libcluster_nodes={@libcluster_nodes} all_nodes={@all_nodes} table_rows={@table_rows} http_links={@http_links} />
+    <.mnesia_cluster
+      mnesia_nodes={@mnesia_nodes}
+      libcluster_nodes={@libcluster_nodes}
+      all_nodes={@all_nodes}
+      table_rows={@table_rows}
+      http_links={@http_links}
+      user_count={@user_count}
+    />
     <h3>Node map</h3>
     <.world_map libcluster_nodes={@libcluster_nodes} mnesia_nodes={@mnesia_nodes} />
     <h3>You can hire me!</h3>
@@ -100,6 +111,7 @@ defmodule GlobalClusterWeb.PageLive do
   attr(:all_nodes, :list, required: true)
   attr(:table_rows, :map, required: true)
   attr(:http_links, :map, required: true)
+  attr(:user_count, :map, required: true)
 
   def mnesia_cluster(assigns) do
     ~H"""
@@ -108,6 +120,7 @@ defmodule GlobalClusterWeb.PageLive do
       <:col :let={node} label="libcluster"><%= if node in @libcluster_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="mnesia"><%= if node in @mnesia_nodes, do: "connected", else: "disconnected" %></:col>
       <:col :let={node} label="Visitors"><%= Map.get(@table_rows, node) %></:col>
+      <:col :let={node} label="Active Users"><%= Map.get(@user_count, node, 0) %></:col>
     </.table>
     """
   end
@@ -190,10 +203,9 @@ defmodule GlobalClusterWeb.PageLive do
      |> put_http_links()}
   end
 
-  @impl true
-  def handle_event("clear", _, socket) do
-    :mnesia.clear_table(:visitor)
+  def handle_info(%{event: "presence_diff", payload: _payload}, socket) do
+    user_count = GlobalClusterWeb.Presence.count_online_users(Node.self())
 
-    {:noreply, socket}
+    {:noreply, assign(socket, user_count: user_count)}
   end
 end
