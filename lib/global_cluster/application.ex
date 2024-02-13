@@ -20,7 +20,8 @@ defmodule GlobalCluster.Application do
       # Start a worker by calling: GlobalCluster.Worker.start_link(arg)
       # {GlobalCluster.Worker, arg},
       # Start to serve requests, typically the last entry
-      GlobalClusterWeb.Endpoint
+      GlobalClusterWeb.Endpoint,
+      GlobalClusterWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
