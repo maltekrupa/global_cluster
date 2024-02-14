@@ -60,7 +60,7 @@ function do_deploy {
   local version
   version="${GITHUB_SHA::7}"
   local filename
-  filename="${RELEASE_NAME}-${version}-${timestamp}"
+  filename="${RELEASE_NAME}-${timestamp}-${version}"
 
   _scp _build/prod/${RELEASE_NAME}*tar.gz "${DEPLOY_TARGET_SCP}:/tmp/${filename}.tar.gz"
   _ssh "mkdir -p /usr/local/${RELEASE_NAME}/$filename"
@@ -68,6 +68,7 @@ function do_deploy {
   _ssh sudo service ${RELEASE_NAME} stop || true
   _ssh "ln -sFf /usr/local/${RELEASE_NAME}/${filename} /usr/local/${RELEASE_NAME}/active"
   _ssh "sudo service ${RELEASE_NAME} start > /dev/null 2>&1"
+  _ssh "rm /tmp/${filename}.tar.gz"
 }
 
 function _ssh {
