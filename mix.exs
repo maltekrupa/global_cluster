@@ -38,19 +38,19 @@ defmodule GlobalCluster.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.10"},
-      {:phoenix_html, "~> 3.3"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.20.1"},
-      {:floki, ">= 0.30.0", only: :test},
-      {:phoenix_live_dashboard, "~> 0.8.2"},
+      {:phoenix, "~> 1.7.11"},
+      {:phoenix_html, "~> 4.0"},
+      {:phoenix_live_reload, "~> 1.4", only: :dev},
+      {:phoenix_live_view, "~> 0.20.9"},
+      {:floki, ">= 0.35.0", only: :test},
+      {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.20"},
+      {:gettext, "~> 0.24"},
       {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
-      {:plug_cowboy, "~> 2.5"},
+      {:dns_cluster, "~> 0.1.3"},
+      {:plug_cowboy, "~> 2.7"},
       {:libcluster, "~> 3.3"},
       {:mnesiac, "~> 0.3"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
