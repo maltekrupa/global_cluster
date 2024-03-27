@@ -8,8 +8,8 @@ Since this demo costs money and does not serve a purpose, I might take it down
 at any moment.
 
 If it really is down, check out some archived links:
-- http://archive.today/2TUVy
-- https://web.archive.org/web/20240203080949/http://gc.nafn.de/
+- https://archive.ph/UFfC2
+- https://web.archive.org/web/20240327135802/http://eu-central-1.gc.nafn.de/
 
 # Iterations
 
