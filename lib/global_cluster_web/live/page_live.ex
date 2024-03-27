@@ -39,8 +39,6 @@ defmodule GlobalClusterWeb.PageLive do
     />
     <h3>Node map</h3>
     <.world_map libcluster_nodes={@libcluster_nodes} mnesia_nodes={@mnesia_nodes} />
-    <h3>You can hire me!</h3>
-    <.job_ad />
     <h3>Why?</h3>
     <.why />
     <h3>Technical details</h3>
@@ -64,13 +62,6 @@ defmodule GlobalClusterWeb.PageLive do
       <p>Did it work? Yes. Was it hard to build? No. Is it fast? Not really. :)</p>
       <p>At the end it is a <b>technical demonstration</b>. Nothing more, nothing less. It does not provide anything useful other than an <b>opportunity to learn</b>. And of course a strange way to burn money.</p>
     </div>
-    """
-  end
-
-  def job_ad(assigns) do
-    ~H"""
-    <div>I'm looking for an Elixir job in a company that will help me grow as a software engineer.</div>
-    <div><a href="mailto:globalcluster@nafn.de">eMail</a> | <a href="https://nafn.de/contact/">homepage</a></div>
     """
   end
 
