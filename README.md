@@ -2,12 +2,10 @@
 
 Counting visitors on a shared and distributed global datastore.
 
-See it live at [gc.nafn.de](http://gc.nafn.de).
+~~See it live at [gc.nafn.de](http://gc.nafn.de).~~
 
-Since this demo costs money and does not serve a purpose, I might take it down
-at any moment.
+The demo has been taken down. Check out some archived links:
 
-If it really is down, check out some archived links:
 - https://archive.ph/UFfC2
 - https://web.archive.org/web/20240327135802/http://eu-central-1.gc.nafn.de/
 
